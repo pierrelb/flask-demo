@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect
 import requests
 
+import pandas as pd
+
 app = Flask(__name__)
 
 app.vars={}
@@ -27,6 +29,11 @@ def graph():
     session.mount('http://', requests.adapters.HTTPAdapter(max_retries=3))
     raw_data = session.get(api_url)
     rel_data = raw_data.json()
+    df = pd.DataFrame(data=rel_data['data'],columns=rel_data['column_names'])
+    
+    df['Date'] = pd.to_datetime(df['Date'])
+    
+    df = df.sort_values(by='Date',ascending=False)
     return render_template('graph.html', script=script, div=div)
 
 if __name__ == '__main__':
