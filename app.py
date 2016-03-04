@@ -19,6 +19,14 @@ def index():
 
 @app.route('/graph')
 def graph():
+    # Get the stock ticker from the dictionary
+    stock_ticker = app.vars['stock_ticker']
+    
+    api_url = 'https://www.quandl.com/api/v1/datasets/WIKI/%s.json' % stock_ticker
+    session = requests.Session()
+    session.mount('http://', requests.adapters.HTTPAdapter(max_retries=3))
+    raw_data = session.get(api_url)
+    rel_data = raw_data.json()
     return render_template('graph.html', script=script, div=div)
 
 if __name__ == '__main__':
