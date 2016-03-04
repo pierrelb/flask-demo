@@ -1,11 +1,29 @@
 from flask import Flask, render_template, request, redirect
 import requests
 
+from bokeh.plotting import figure
+from bokeh.embed import components
+
 import pandas as pd
 
 app = Flask(__name__)
 
 app.vars={}
+
+plot_choices = {
+    'close': 'Close',
+    'adj_close': 'Adj. Close',
+    'open': 'Open',
+    'adj_open': 'Adj. Open',
+}
+
+plot_colors = {
+    0: 'blue',
+    1: 'red',
+    2: 'green',
+    3: 'orange',
+}
+
 @app.route('/')
 def main():
     return redirect('/index')
@@ -34,6 +52,21 @@ def graph():
     df['Date'] = pd.to_datetime(df['Date'])
     
     df = df.sort_values(by='Date',ascending=False)
+    
+    TOOLS="pan,wheel_zoom,box_zoom,reset,save"
+    
+    plot = figure(tools=TOOLS,
+                  title='Data from Quandle WIKI set',
+                  x_axis_label='date',
+                  x_axis_type='datetime')
+    
+    # Remove the stock ticker so the options can be sorted
+    del app.vars['stock_ticker']
+    for i, key in enumerate(app.vars.keys()):
+        plot.line(df['Date'], df[plot_choices[key]], legend='{0}: {1}'.format(stock_ticker,plot_choices[key]), color=plot_colors[i])
+        
+    script, div = components(plot)
+    
     return render_template('graph.html', script=script, div=div)
 
 if __name__ == '__main__':
