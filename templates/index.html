@@ -2,14 +2,34 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Good day, World!</title>
+		<title>Input stock ticker</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</head>
 	<body>
 		<div>
-  			<h1>Good day, World!</h1>
+  			<h1>User Input Stock</h1>
+				<h3>Please enter a stock ticker e.g. AAPL.</h1>
+					<form id='index' method='post'>
+						<p>
+							Ticker symbol: <input type='text' name='stock_ticker'>
+						</p>
+						<p>
+							Closing price: <input type='radio' name='close'>
+						</p>
+						<p>
+							Adjusted closing price: <input type='radio' name='adj_close'>
+						</p>
+						<p>
+							Opening price: <input type='radio' name='open'>
+						</p>
+						<p>
+							Adjusted opening price: <input type='radio' name='adj_open'>
+						</p>
+						<p>
+							<input type='submit' value='Submit'>
+						</p>
 		</div>
 	</body>
 </html>
